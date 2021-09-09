@@ -1,0 +1,79 @@
+workflows:
+  dev:
+    name: dev
+    environment:
+      flutter: stable
+    triggering:
+      events:
+        - pull_request
+      branch_patterns:
+        - pattern: '*'
+          include: true
+          source: true
+    scripts:
+      - flutter packages pub get
+    publishing:
+      email:
+        recipients:
+          - helina.ariva@nevercode.io
+      slack:
+        channel: '#3rd-party-status'
+        notify_on_build_start: false
+    artifacts:
+      - flutter_drive.log
+  master:
+    name: master
+    environment:
+      flutter: stable
+    cache:
+      cache_paths:
+        - $FCI_BUILD_DIR/build
+    triggering:
+      events:
+        - push
+        - pull_request
+        - tag
+      branch_patterns:
+        - pattern: '*'
+          include: true
+          source: true
+    scripts:
+      - |
+        # set up debug key.properties
+        keytool -genkeypair \
+          -alias androiddebugkey \
+          -keypass android \
+          -keystore ~/.android/debug.keystore \
+          -storepass android \
+          -dname 'CN=Android Debug,O=Android,C=US' \
+          -keyalg 'RSA' \
+          -keysize 2048 \
+          -validity 10000
+      - |
+        # set up local properties
+        echo "flutter.sdk=$HOME/programs/flutter" > "$FCI_BUILD_DIR/android/local.properties"
+      - flutter packages pub get
+      - flutter test
+      - flutter build apk --release
+    publishing:
+      email:
+        recipients:
+          - helina.ariva@nevercode.io
+    artifacts:
+      - build/**/outputs/**/*.apk
+      - build/**/outputs/**/*.aab
+      - build/**/outputs/**/mapping.txt
+      - flutter_drive.log
+  testing:
+    name: Testing
+    environment:
+      flutter: stable
+    scripts:
+      - flutter packages pub get
+      - flutter test
+    publishing:
+      email:
+        recipients:
+          - helina.ariva@nevercode.io
+    artifacts:
+      - flutter_drive.log
