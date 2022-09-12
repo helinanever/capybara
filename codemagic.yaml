@@ -1,9 +1,7 @@
 workflows:
   build-ios:
     name: Build iOS
-    labels:
-      - helina_test
-      - hello
+    instance_type: mac_mini_m1
     environment:
       xcode: 13.3
     scripts:
