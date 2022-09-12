@@ -1,6 +1,9 @@
 workflows:
   build-ios:
     name: Build iOS
+    labels:
+      - helina_test
+      - hello
     environment:
       xcode: 13.3
     scripts:
