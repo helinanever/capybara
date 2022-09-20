@@ -12,7 +12,7 @@ workflows:
     artifacts:
       - /tmp/xcodebuild_logs/*.log
   empty:
-    name: Empty
+    name: Test workflow
     labels:
       - QA
       - flavor1
