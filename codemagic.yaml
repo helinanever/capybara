@@ -13,6 +13,9 @@ workflows:
       - /tmp/xcodebuild_logs/*.log
   empty:
     name: Empty
+    labels:
+      - QA
+      - flavor1
     environment:
       xcode: 13.3
     scripts:
