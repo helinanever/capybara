@@ -3,7 +3,7 @@ workflows:
     name: Build iOS
     instance_type: mac_mini_m1
     environment:
-      xcode: 13.3
+      xcode: 13.0
     scripts:
       - ifconfig | grep 10 | grep inet
       - flutter packages pub get
