@@ -20,3 +20,10 @@ workflows:
       xcode: latest
     scripts:
       - echo "empty"
+  greetings:
+    inputs:
+      name:
+        description: Who is greeted?
+        default: Codemagic
+    scripts:
+      - echo "Hello, ${{ inputs.name }}"
