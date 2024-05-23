@@ -27,5 +27,9 @@ workflows:
         default: Codemagic
       name_no_default:
         description: Who is greeted? No default.
+      random_number:
+        description: random number
+        type: number
     scripts:
       - echo "Hello, ${{ inputs.name }}"
+      - echo "Hello, ${{ inputs.name_no_default }}"
