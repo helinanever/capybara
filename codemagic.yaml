@@ -44,7 +44,7 @@ workflows:
       random_number:
         description: random number
         type: number
-      random_number_default:
+      random-number_default:
         description: random number
         type: number
         default: 0
