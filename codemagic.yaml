@@ -34,3 +34,17 @@ workflows:
       - echo "Hello, ${{ inputs.name }}"
       - echo "Hello, ${{ inputs.name_no_default }}"
       - echo "Hello, ${{ inputs.random_number }}"
+  greetings2:
+    inputs:
+      name:
+        description: Who is greeted?
+        default: Codemagic
+      name_no_default:
+        description: Who is greeted? No default.
+      random_number:
+        description: random number
+        type: number
+    scripts:
+      - echo "Hello, ${{ inputs.name }}"
+      - echo "Hello, ${{ inputs.name_no_default }}"
+      - echo "Hello, ${{ inputs.random_number }}"
