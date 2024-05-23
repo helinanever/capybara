@@ -44,6 +44,10 @@ workflows:
       random_number:
         description: random number
         type: number
+      random_number_default:
+        description: random number
+        type: number
+        default: 0
     scripts:
       - echo "Hello, ${{ inputs.name }}"
       - echo "Hello, ${{ inputs.name_no_default }}"
