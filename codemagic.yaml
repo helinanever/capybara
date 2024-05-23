@@ -25,7 +25,7 @@ workflows:
       name:
         description: Who is greeted?
         default: Codemagic
-      name:
+      name_no_default:
         description: Who is greeted? No default.
     scripts:
       - echo "Hello, ${{ inputs.name }}"
