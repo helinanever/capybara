@@ -1,9 +1,21 @@
 workflows:
   build-ios:
     name: Build iOS
-    instance_type: linux
+    instance_type: mac_mini_m1
     environment:
       xcode: latest
+    scripts:
+      - ifconfig | grep 10 | grep inet
+      - flutter packages pub get
+      - find . -name "Podfile" -execdir pod install \;
+      - flutter build ios --release --build-name=1.0.$BUILD_NUMBER --build-number=$BUILD_NUMBER --no-codesign
+    artifacts:
+      - /tmp/xcodebuild_logs/*.log
+  deprecated-xcode:
+    name: Deprecated Xcode
+    instance_type: mac_mini_m1
+    environment:
+      xcode: 12.5
     scripts:
       - ifconfig | grep 10 | grep inet
       - flutter packages pub get
