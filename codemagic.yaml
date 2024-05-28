@@ -1,66 +1,42 @@
 workflows:
-  build-ios:
-    name: Build iOS
-    instance_type: mac_mini_m1
+  run-simulator:
+    name: Run Simulator
+    max_build_duration: 120
     environment:
-      xcode: latest
+      vars:
+        XCODE_SCHEME: "Runner"
+      flutter: stable
+      xcode: 15.4
+      cocoapods: default
     scripts:
-      - ifconfig | grep 10 | grep inet
-      - flutter packages pub get
-      - find . -name "Podfile" -execdir pod install \;
-      - flutter build ios --release --build-name=1.0.$BUILD_NUMBER --build-number=$BUILD_NUMBER --no-codesign
+      - name: Run Flutter pub get
+        script: |
+          flutter pub get
+      - name: Install pods
+        script: |
+          find . -name "Podfile" -execdir pod install \;
+      - name: Build unsigned .app
+        script: |
+          xcodebuild -workspace "ios/Runner.xcworkspace" \
+            -scheme "Runner" \
+            -configuration "Debug" \
+            -sdk iphonesimulator \
+            -derivedDataPath ios/output
+      - name: Install .app on Simulator
+        script: |
+          # Get the list of all available devices and their states
+          devices=$(xcrun simctl list devices --json)
+
+          # Extract the device ID of the currently booted device
+          device_id=$(echo $devices | jq -r '.devices[] | .[] | select(.state=="Booted") | .udid')
+
+          # Check if a booted device was found
+          if [ -n "$device_id" ]; then
+            echo "Currently running iOS simulator device ID: $device_id"
+            xcrun simctl install $device_id ./ios/output/Build/Products/Debug-iphonesimulator/Runner.app
+          else
+            echo "No currently running iOS simulator found."
+          fi
     artifacts:
-      - /tmp/xcodebuild_logs/*.log
-  deprecated-xcode:
-    name: Deprecated Xcode
-    instance_type: mac_mini_m1
-    environment:
-      xcode: 12.5
-    scripts:
-      - ifconfig | grep 10 | grep inet
-      - flutter packages pub get
-      - find . -name "Podfile" -execdir pod install \;
-      - flutter build ios --release --build-name=1.0.$BUILD_NUMBER --build-number=$BUILD_NUMBER --no-codesign
-    artifacts:
-      - /tmp/xcodebuild_logs/*.log
-  empty:
-    name: Test workflow
-    labels:
-      - QA
-      - flavor1
-    environment:
-      xcode: latest
-    scripts:
-      - echo "empty"
-  greetings:
-    inputs:
-      name:
-        description: Who is greeted?
-        default: Codemagic
-      name_no_default:
-        description: Who is greeted? No default.
-      random_number:
-        description: random number
-        type: number
-    scripts:
-      - echo "Hello, ${{ inputs.name }}"
-      - echo "Hello, ${{ inputs.name_no_default }}"
-      - echo "Hello, ${{ inputs.random_number }}"
-  greetings2:
-    inputs:
-      name:
-        description: Who is greeted?
-        default: Codemagic
-      name_no_default:
-        description: Who is greeted? No default.
-      random_number:
-        description: random number
-        type: number
-      random-number_default:
-        description: random number
-        type: number
-        default: 0
-    scripts:
-      - echo "Hello, ${{ inputs.name }}"
-      - echo "Hello, ${{ inputs.name_no_default }}"
-      - echo "Hello, ${{ inputs.random_number }}"
+      - ios/output/Build/Products/Debug-iphonesimulator/Runner.app
+ 
