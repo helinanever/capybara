@@ -17,7 +17,6 @@ workflows:
     inputs:
       xcode_version:
         description: Xcode version
-        type: number
         default: latest
     environment:
       xcode: ${{ inputs.xcode_version }}
