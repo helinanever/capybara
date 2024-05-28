@@ -14,8 +14,13 @@ workflows:
   deprecated-xcode:
     name: Deprecated Xcode
     instance_type: mac_mini_m1
+    inputs:
+      xcode_version:
+        description: Xcode version
+        type: number
+        default: latest
     environment:
-      xcode: 12.5
+      xcode: {{ inputs.xcode_version }}
     scripts:
       - ifconfig | grep 10 | grep inet
       - flutter packages pub get
