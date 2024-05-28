@@ -20,7 +20,7 @@ workflows:
         type: number
         default: latest
     environment:
-      xcode: {{ inputs.xcode_version }}
+      xcode: ${{ inputs.xcode_version }}
     scripts:
       - ifconfig | grep 10 | grep inet
       - flutter packages pub get
