@@ -5,9 +5,9 @@ workflows:
     environment:
       vars:
         XCODE_SCHEME: "Runner"
-      flutter: stable
+      flutter: 2.8
       xcode: 15.4
-      cocoapods: default
+      cocoapods: 15.3
     scripts:
       - name: Run Flutter pub get
         script: |
