@@ -65,6 +65,7 @@ workflows:
         type: number
         default: 0
     scripts:
+      - export
       - echo "Hello, ${{ inputs.name }}"
       - echo "Hello, ${{ inputs.name_no_default }}"
       - echo "Hello, ${{ inputs.random_number }}"
