@@ -60,10 +60,6 @@ workflows:
       random_number:
         description: random number
         type: number
-      random-number_default:
-        description: random number
-        type: number
-        default: 0
     scripts:
       - export
       - echo "Hello, ${{ inputs.name }}"
