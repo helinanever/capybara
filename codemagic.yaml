@@ -68,7 +68,8 @@ workflows:
   vars:
     environment:
       xcode: latest
-      groups: test_group
+    groups: 
+      - test_group
     scripts:
       - echo $my_test
       - echo $my_test2
