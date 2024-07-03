@@ -54,6 +54,9 @@ workflows:
       - echo "Hello, ${{ inputs.name_no_default }}"
       - echo "Hello, ${{ inputs.random_number }}"
   greetings2:
+    labels:
+      - ${{ inputs.name }}
+      - test
     inputs:
       name:
         description: Who is greeted?
