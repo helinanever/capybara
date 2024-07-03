@@ -13,6 +13,8 @@ workflows:
       - /tmp/xcodebuild_logs/*.log
   deprecated-xcode:
     name: Deprecated Xcode
+    labels:
+      - ${{ inputs.xcode_version }}
     instance_type: mac_mini_m1
     inputs:
       xcode_version:
