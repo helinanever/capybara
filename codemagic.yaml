@@ -45,13 +45,20 @@ workflows:
     environment:
       xcode: 16.0
     scripts:
-      - name: Check available simulators
+      - name: List simulators
         script: |
           # Get the list of all available devices and their states
           devices=$(xcrun simctl list devices --json)
 
           # Extract the device ID of the currently booted device
           device_id=$(echo $devices | jq -r '.devices[] | .[] | select(.state=="Booted") | .udid')
+
+          # Check if a booted device was found
+          if [ -n "$device_id" ]; then
+            echo "Booted device ID: $device_id"
+          else
+            echo "No currently running iOS simulator found."
+          fi
  
 
  
