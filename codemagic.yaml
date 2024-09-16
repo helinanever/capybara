@@ -49,6 +49,7 @@ workflows:
         script: |
           # Get the list of all available devices and their states
           devices=$(xcrun simctl list devices --json)
+          echo $devices
 
           # Extract the device ID of the currently booted device
           device_id=$(echo $devices | jq -r '.devices[] | .[] | select(.state=="Booted") | .udid')
