@@ -38,4 +38,20 @@ workflows:
           fi
     artifacts:
       - ios/output/Build/Products/Debug-iphonesimulator/Runner.app
+
+  check-simulator:
+    name: Check simulators
+    max_build_duration: 120
+    environment:
+      xcode: 16.0
+    scripts:
+      - name: Check available simulators
+        script: |
+          # Get the list of all available devices and their states
+          devices=$(xcrun simctl list devices --json)
+
+          # Extract the device ID of the currently booted device
+          device_id=$(echo $devices | jq -r '.devices[] | .[] | select(.state=="Booted") | .udid')
+ 
+
  
