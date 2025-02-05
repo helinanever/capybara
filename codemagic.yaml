@@ -50,6 +50,27 @@ workflows:
           # Get the list of all available devices and their states
           devices=$(xcrun simctl list devices --json)
           echo $devices
+
+  app-preview:
+    name: App preview on simulator
+    max_build_duration: 120
+    environment:
+      vars:
+        XCODE_SCHEME: "Runner"
+      flutter: stable
+      xcode: 16.0
+    scripts:
+      - name: Run Flutter pub get
+        script: |
+          flutter pub get
+      - name: Install pods
+        script: |
+          find . -name "Podfile" -execdir pod install \;
+      - name: Build unsigned .app for simulator
+        script: |
+          flutter build ios --simulator
+    artifacts:
+      - ios/output/Build/Products/Debug-iphonesimulator/Runner.app
  
 
  
