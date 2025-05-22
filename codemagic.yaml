@@ -42,9 +42,11 @@ workflows:
         track: alpha
 
   empty:
-    name: Empty
+    name: Empty workflow
     environment:
-      xcode: 13.3
+      groups:
+        - test
+      xcode: latest
     scripts:
       - echo "empty"
 
