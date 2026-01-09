@@ -93,7 +93,7 @@ workflows:
       xcode: 16.0
     cache:
       cache_paths:
-        - $FLUTTER_ROOT/.pub-cache
+        - $HOME/.gradle/cache
     scripts:
       - name: Run Flutter pub get
         script: |
