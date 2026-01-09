@@ -91,6 +91,9 @@ workflows:
         XCODE_SCHEME: "Runner"
       flutter: stable
       xcode: 16.0
+    cache:
+      cache_paths:
+        - $FLUTTER_ROOT/.pub-cache
     scripts:
       - name: Run Flutter pub get
         script: |
