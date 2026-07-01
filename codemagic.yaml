@@ -4,13 +4,32 @@ workflows:
     environment:
       xcode: 13.3
     scripts:
-      - ifconfig | grep 10 | grep inet
       - flutter packages pub get
       - find . -name "Podfile" -execdir pod install \;
       - flutter build ios --release --build-name=1.0.$BUILD_NUMBER --build-number=$BUILD_NUMBER --no-codesign
     artifacts:
       - /tmp/xcodebuild_logs/*.log
 
+  build-ios-new:
+    name: Build iOS packages pub get
+    environment:
+      xcode: latest
+    scripts:
+      - flutter packages pub get -v
+      - flutter ios
+    artifacts:
+      - /tmp/xcodebuild_logs/*.log
+
+  build-ios-new-alt:
+    name: Build iOS pub get
+    environment:
+      xcode: latest
+    scripts:
+      - flutter pub get -v
+      - flutter ios
+    artifacts:
+      - /tmp/xcodebuild_logs/*.log
+      
   build-android:
     name: Build Android
     instance_type: linux
